@@ -1,114 +1,137 @@
+from tkinter import *
+from functools import partial # To prevent unwanted windows
+import csv
 import random
 
-color_list_hex = [
-  ['aliceblue', '#f0f8ff', '19', 'black'],
-  ['antiquewhite', '#faebd7', '25', 'black'],
-  ['aqua', '#00ffff', '15', 'black'],
-  ['aquamarine', '#7fffd4', '27', 'black'],
-  ['azure', '#f0ffff', '14', 'black'],
-  ['beige', '#f5f5dc', '10', 'black'],
-  ['bisque', '#ffe4c4', '13', 'black'],
-  ['black', '#000000', '1', 'white'],
-  ['blanchedalmond', '#ffebcd', '26', 'black'],
-  ['blue', '#0000ff', '2', 'white'],
-  ['blueviolet', '#8a2be2', '28', 'white'],
-  ['brown', '#a52a2a', '5', 'white'],
-  ['burlywood', '#deb887', '20', 'black'],
-  ['cadetblue', '#5f9ea0', '24', 'white'],
-  ['chartreuse', '#7fff00', '16', 'black'],
-  ['chocolate', '#d2691e', '6', 'white'],
-  ['coral', '#ff7f50', '7', 'black'],
-  ['cornflowerblue', '#6495ed', '18', 'white'],
-  ['cornsilk', '#fff8dc', '12', 'black'],
-  ['crimson', '#dc143c', '8', 'white'],
-  ['cyan', '#00ffff', '15', 'black'],
-  ['darkblue', '#00008b', '3', 'white'],
-  ['darkcyan', '#008b8b', '17', 'white'],
-  ['darkgoldenrod', '#b8860b', '21', 'white'],
-  ['darkgray', '#a9a9a9', '9', 'white'],
-  ['darkgreen', '#006400', '29', 'white'],
-  ['darkgrey', '#a9a9a9', '9', 'white'],
-  ['darkkhaki', '#bdb76b', '22', 'black'],
-  ['darkmagenta', '#8b008b', '30', 'white'],
-  ['darkolivegreen', '#556b2f', '31', 'white'],
-  ['darkorange', '#ff8c00', '23', 'black'],
-  ['darkorchid', '#9932cc', '32', 'white'],
-  ['darkred', '#8b0000', '4', 'white'],
-  ['darksalmon', '#e9967a', '33', 'black'],
-  ['darkseagreen', '#8fbc8f', '34', 'black'],
-  ['darkslateblue', '#483d8b', '35', 'white'],
-  ['darkslategray', '#2f4f4f', '36', 'white'],
-  ['darkslategrey', '#2f4f4f', '36', 'white'],
-  ['darkturquoise', '#00ced1', '37', 'black'],
-  ['darkviolet', '#9400d3', '38', 'black'],
-  ['deeppink', '#ff1493', '39', 'black'],
-  ['deepskyblue', '#00bfff', '40', 'black'],
-  ['dimgray', '#696969', '41', 'white'],
-  ['dimgrey', '#696969', '41', 'white'],
-  ['dodgerblue', '#1e90ff', '42', 'black'],
-  ['firebrick', '#b22222', '43', 'white'],
-  ['floralwhite', '#fffaf0', '44', 'black'],
-  ['forestgreen', '#228b22', '45', 'white'],
-  ['fuchsia', '#ff00ff', '46', 'black'],
-  ['gainsboro', '#dcdcdc', '47', 'black'],
-  ['ghostwhite', '#f8f8ff', '48', 'black'],
-  ['gold', '#ffd700', '49', 'black'],
-  ['goldenrod', '#daa520', '50', 'black'],
-  ['gray', '#808080', '51', 'white'],
-  ['green', '#008000', '52', 'white'],
-  ['greenyellow', '#adff2f', '53', 'black'],
-  ['grey', '#808080', '51', 'white'],
-  ['honeydew', '#f0fff0', '54', 'black'],
-  ['hotpink', '#ff69b4', '55', 'black'],
-  ['indianred', '#cd5c5c', '56', 'black'],
-  ['indigo', '#4b0082', '57', 'white'],
-  ['ivory', '#fffff0', '58', 'black'],
-  ['khaki', '#f0e68c', '59', 'black'],
-  ['lavender', '#e6e6fa', '60', 'black'],
-  ['lavenderblush', '#fff0f5', '61', 'black'],
-  ['lawngreen', '#7cfc00', '62', 'black'],
-  ['lemonchiffon', '#fffacd', '63', 'black'],
-  ['lightblue', '#add8e6', '64', 'black'],
-  ['lightcoral', '#f08080', '65', 'black'],
-  ['lightcyan', '#e0ffff', '66', 'black'],
-  ['lightgoldenrodyellow', '#fafad2', '67', 'black'],
-  ['lightgray', '#d3d3d3', '68', 'black'],
-  ['lightgreen', '#90ee90', '69', 'black'],
-  ['lightgrey', '#d3d3d3', '68', 'black'],
-  ['lightpink', '#ffb6c1', '70', 'black'],
-  ['lightsalmon', '#ffa07a', '71', 'black'],
-  ['lightseagreen', '#20b2aa', '72', 'black'],
-  ['lightskyblue', '#87cefa', '73', 'black'],
-  ['lightslategray', '#778899', '74', 'black'],
-  ['lightslategrey', '#778899', '74', 'black'],
-  ['lightsteelblue', '#b0c4de', '75', 'black'],
-  ['lightyellow', '#ffffe0', '76', 'black'],
-  ['lime', '#00ff00', '77', 'black'],
-  ['limegreen', '#32cd32', '78', 'black'],
-  ['linen', '#faf0e6', '79', 'black'],
-  ['magenta', '#ff00ff', '80', 'black'],
-  ['maroon', '#800000', '81', 'white'],
-  ['mediumaquamarine', '#66cdaa', '82', 'black']]
+# users choose 3, 5 0r 10
+class ChooseRounds:
+  def __init__(self):
+    # test 3 input
+    self.to_play(3)
 
-print("we have started with {} colours!".format(len(color_list_hex)))
+  def to_play(self, num_rounds):
+    Play(num_rounds)
 
-# loop 3 times (ie: 3 rounds)
-color_total = 0
-for item in range(0, 3):
-  round_colour_list = []
-  color_scores = []
+    # hide intro window
+    root.withdraw()
+
+class Play:
+  def __init__(self, how_many):
+    self.play_box = Toplevel()
+    # if users press cross at top, closes help and 'releases' help button
+    self.play_box.protocol('WM_DELETE_WINDOW', partial(self.close_play))
+    # how many rounds 
+    self.round_wanted = IntVar()
+    self.round_wanted.set(how_many)
+    # how many rounds they play
+    self.round_played = IntVar()
+    self.round_played.set(0)
+    # how many rounds they won
+    self.round_won = IntVar()
+    self.round_won.set(0)
+    #lists score
+    user_scores = []
+    computer_scores = []
+
+    # get all the colours from the colours file
+    self.all_colours = self.get_all_colours()
+
+    self.quest_frame = Frame(self.play_box, padx=10, pady=10)
+    self.quest_frame.grid()
+
+    rounds_heading = "Choose - Round 1 of {}".format(how_many)
+    self.choose_heading = Label(self.quest_frame, text=rounds_heading, font=("Arial", "16", "bold"))
+    self.choose_heading.grid(row=0)
+    # ***** row 1 *****
+    instructions = "In each round, you will be given six colours. Pick a colour and try to beat the computer. \n results of the round will be shown below."
+    self.instructions_label = Label(self.quest_frame, text=instructions, wraplength=300, justify="left")
+    self.instructions_label.grid(row=1)
+    # ***** row 2 ***** get colours for buttons for first round ...
+    button_colours_list = self.get_round_colors()
+    print(button_colours_list)
+    # create colour buttons (in choice_frame)
+    self.choice_frame = Frame(self.quest_frame)
+    self.choice_frame.grid(row=2)
+    for item in range(0, 6):
+      self.colour_button = Button(self.choice_frame, fg=button_colours_list[item][2], bg=button_colours_list[item][0], text="{}".format(button_colours_list[item][]),width=15,command=lambda i=item: self.to_play(button_colours_list[i][3]))
+      self.colour_button.grid(row=item // 3, column=item % 3, padx=5, pady=5)
+    # ***** row 3 ***** display computer choice
+    self.comp_choice_label = Label(self.quest_frame, text="Computer Choice will appea", bg="#C0C0C0", width=51)
+    self.comp_choice_label.grid(row=3, pady=10)
+    # ***** row 4 ***** rounds results & next button
+    self.rounds_frame = Frame(self.quest_frame)
+    self.rounds_frame.grid(row=4, pady=5)
+    
+    self.round_results_label = Label(self.rounds_frame, text="Round Results will appea", width=32, bg="#FFF2CC", font=("Arial", "10"),pady=5)
+    self.round_results_label.grid(row=0, column=0, padx=5)
+    
+    self.next_button = Button(self.rounds_frame, text="Next Round", fg="#FFFFFF", bg="008BFC", font=("Arial", "12","bold"), width=10, state=DISABLED)
+    self.next_button.grid(row=0, column=1)
+    # ***** row 5 ***** big overall results
+    self.game_results_label = Label(self.quest_frame, text="Game Totals: User: - \t Computer: -", bg="#C0C0C0", padx=10, pady=10, font=("Arial", "10"), width=42)
+    self.game_results_label.grid(row=5, pady=5)
+    # ***** row 6 *****
+    self.control_frame = Frame(self.quest_frame)
+    self.control_frame.grid(row=6)
+
+    control_buttons = [["#CC6600", "Help", "get help"], ["#004C99", "Statistics", "get stats"], ["#808080", "Start Over", "start over"]]
+    for item in range(0, 3):
+      self.make_control_button = Button(self.control_frame, fg="#FFFFFF", bg=control_buttons[item][0], text=control_buttons[item][1], width=11, font=("Arial", "12","bold"), command=lambda i=item: self.to_do(control_buttons[i][2]))
+    self.make_control_button.grid(row=0, column=item, padx=5, pady=5)
+
+  # retrieve colours from file
+  def get_all_colours(self):
+    with open("colour_list_hex_v1.py", newline='') as file:
+      # Read all rows into a list
+      var_all_colors = list(csv.reader(file, delimiter=","))
+    # remove the first row (header values)
+    var_all_colors.pop(0)
+    return var_all_colors
+
+  # randomly choose 6 colours for buttons
+  def get_round_colors(self):
+    round_colour_list = []
+    color_scores = []
+    # loop 6 times (6 unique colours)
+    while len(round_colour_list) < 6:
+      # choose item
+      chosen_colour = random.choice(self.all_colours)
+      chosen_index = self.all_colours.index(chosen_colour)
+      # check score not in list
+      if chosen_colour[2] not in color_scores:
+        # add item to rounds list
+        round_colour_list.append(chosen_colour)
+        color_scores.append(chosen_colour[1])
+        # remove item from master list
+        self.all_colours.pop(chosen_index)
+    return round_colour_list
   
-  # loop 6 times (6 unique colours)
-  while len(round_colour_list) < 6:
-    # choose item
-    chosen_colour = random.choice(color_list_hex)
-    chosen_index = color_list_hex.index(chosen_colour)
-    # check score not in list
-    if chosen_colour[2] not in color_scores:
-      # add to list
-      round_colour_list.append(chosen_colour)
-      # add to score list
-      color_scores.append(chosen_index)
-      color_total += int(chosen_colour[2])
-  print("Round Colours:", round_colour_list)
-  print("Round Scores:", color_total)
+  def to_compare(self, user_score):
+    print("your score is {}".format(user_score))
+  
+  def to_do(self, action):
+    if action == "get help":
+      self.get_help()
+    elif action == "get stats":
+      self.get_stats()
+    else:
+      self.close_play()
+
+  def get_help(self):
+    pass
+  
+  def get_stats(self):
+    pass
+    
+  def close_play(self):
+    # reshow
+    root.deiconify()
+    self.play_box.destroy()
+
+
+#main routine
+if __name__ == "__main__":
+  root = Tk()
+  root.title("Colour Quest Planning")
+  ChooseRounds()
+  root.mainloop()

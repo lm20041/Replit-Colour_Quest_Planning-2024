@@ -1,3 +1,5 @@
+import random
+
 color_list_hex = [
   ['aliceblue', '#f0f8ff', '19', 'black'],
   ['antiquewhite', '#faebd7', '25', 'black'],
@@ -87,3 +89,26 @@ color_list_hex = [
   ['magenta', '#ff00ff', '80', 'black'],
   ['maroon', '#800000', '81', 'white'],
   ['mediumaquamarine', '#66cdaa', '82', 'black']]
+
+print("we have started with {} colours!".format(len(color_list_hex)))
+
+# loop 3 times (ie: 3 rounds)
+color_total = 0
+for item in range(0, 3):
+  round_colour_list = []
+  color_scores = []
+
+  # loop 6 times (6 unique colours)
+  while len(round_colour_list) < 6:
+    # choose item
+    chosen_colour = random.choice(color_list_hex)
+    chosen_index = color_list_hex.index(chosen_colour)
+    # check score not in list
+    if chosen_colour[2] not in color_scores:
+      # add to list
+      round_colour_list.append(chosen_colour)
+      # add to score list
+      color_scores.append(chosen_index)
+      color_total += int(chosen_colour[2])
+  print("Round Colours:", round_colour_list)
+  print("Round Scores:", color_total)
