@@ -93,6 +93,7 @@ color_list_hex = [
 print("we have started with {} colours!".format(len(color_list_hex)))
 
 # loop 3 times (ie: 3 rounds)
+color_total = 0
 for item in range(0, 3):
   round_colour_list = []
   color_scores = []
@@ -108,5 +109,6 @@ for item in range(0, 3):
       round_colour_list.append(chosen_colour)
       # add to score list
       color_scores.append(chosen_index)
+      color_total += int(chosen_colour[2])
   print("Round Colours:", round_colour_list)
-  print("Round Scores:", len(color_scores))
+  print("Round Scores:", color_total)
